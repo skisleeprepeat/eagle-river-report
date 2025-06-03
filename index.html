@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ERC Conditions</title>
+
+    <!-- Google fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome icons -->
+    <script src="https://kit.fontawesome.com/972bcf2c07.js" crossorigin="anonymous"></script>
+
+    <!-- Plotly CDN (Loads the Plotly javascript library)-->
+    <script src="https://cdn.plot.ly/plotly-2.0.0.min.js"></script>
+
+    <!-- Leaflet JS Library CDN -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      defer
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+
+    <!-- Load local geojson datasets  -->
+    <!-- <script src="js/streams_attributed.js"></script> -->
+    <script src="js/streams.js"></script>
+    <script src="js/medianFlows.js"></script>
+    <script src="js/huc10.js"></script>
+
+    <!-- Load the USGS data API functions -->
+    <script defer src="js/data-functions.js"></script>
+
+    <!-- Load leaflet map -->
+    <script defer src="js/basemap.js"></script>
+
+    <!-- Local Styles  -->
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+
+  <body>
+    <div class="flex-container">
+
+      <!-- ------- SIDEBAR ------- -->
+
+      <div class="sidebar">
+        <div class="logo-flex-container">
+          <img src="img/logo-basic.jpg" alt="Logo" class="logo" />
+          <span class="logo-label"><a href="https://eagleriverco.org" target="_blank">Eagle River Coalition</a></span>
+        </div>      
+        
+        <h1 id="segment-cards-header">Current Stream Conditions</h1>
+        <ul class="segment-cards-list">
+        <div id="sidebar-list-start" style="display: none;"></div>
+        
+        </ul>
+
+        <footer>
+        <p class="copyright">
+          &copy; Copyright
+          <a
+            class="company-link"
+            target="_blank"
+            alt="Lotic Hydrological company website"
+            href="https://www.lotichydrological.com"
+            >Lotic Hydrological 2025</a
+          >.
+          <br />
+          Created for
+          <a
+            class="company-link"
+            href="https://www.eagleriverco.com"
+            target="_blank"
+            alt="Eagle River Coalition organizational website"
+            >Eagle River Coalition 2025</a
+          >
+          <br />
+          <a
+            class="social-icon-link"
+            href="https://www.instagram.com/eaglerivercoalition/"
+            target="_blank"
+            ><i class="social-icon fa-brands fa-instagram"></i></a>
+          <a
+            class="social-icon-link"
+            href="https://www.facebook.com/Eaglerivercoalition"
+            target="_blank"
+            ><i class="social-icon fa-brands fa-facebook"></i></a>
+        </p>
+        </footer>
+        
+      </div>
+
+      <!-- end sidebar -->
+
+      <!-- ------- MAP ------- -->
+
+      <div class="map-container">
+        <div id="map-toggles">
+
+          <span id="flow-legend"
+            ><span class="legend-title">FLOW CONDITIONS:&nbsp;&nbsp;</span>
+            <div class="legend-symbol" style="background-color: #ff0000"></div>
+            Very low &nbsp;&nbsp;
+            <div class="legend-symbol" style="background-color: #ffa400"></div>
+            Lower than usual &nbsp;&nbsp;
+            <div class="legend-symbol" style="background-color: #00ff00"></div>
+            Typical&nbsp;&nbsp;
+            <div class="legend-symbol" style="background-color: #40dfd0"></div>
+            Higher than usual &nbsp;&nbsp;
+            <div class="legend-symbol" style="background-color: #0000ff"></div>
+            High &nbsp;&nbsp;
+            <div class="legend-symbol" style="background-color: #000000"></div>
+            Very high
+          </span>
+
+          <span id="temp-legend" class="hidden-none"
+            ><span class="legend-title">FISHING TEMPERATURE RISK:&nbsp;&nbsp;</span>
+            <div class="legend-symbol" style="background-color: #00ff00"></div>
+            Low &#40;&lt;65 F&#41; &nbsp;&nbsp;
+            <div class="legend-symbol" style="background-color: #ffa400"></div>
+            Concern &#40;65-70 F&#41;&nbsp;&nbsp;
+            <div class="legend-symbol" style="background-color: #ff0000"></div>
+            High &#40;&gt; 70 F&#41;</span
+          ><br>
+
+          <div class="btn" id="change-style-btn">Toggle Flow / Temp</div><br>
+          
+        </div>
+
+        <div id="map">
+          WATERSHED MAP LOADING ...
+        </div>
+
+      </div>
+      <!-- end MAP CONTAINER-->
+
+    </div>
+    <!-- end full page flex container -->
+
+    <!-- ------- PLOTS MODAL ------- -->
+
+    <div class="modal hidden" style="border: 1px black">
+      <button class="btn--close-modal">&times;</button>
+      <h2 class="modal__header">7 Day Flow and Temperature History</h2>
+      <div class="charts-container">
+        <div class="plotly-chart" id="q_plot">FLOW CHART HERE</div>
+        <div class="plotly-chart" id="t_plot">TEMPERATURE CHART HERE</div>
+      </div>
+    </div>
+    <div class="overlay hidden"></div>
+
+    <!-- ------- PLOTS MODAL ------- -->
+
+    <div class="modal hidden" style="border: 1px black">
+      <button class="btn--close-modal">&times;</button>
+      <h2 class="modal__header">7 Day Stream Flow and Temperature History</h2>
+      <div class="charts-container">
+        <div class="plotly-chart" id="q_plot">FLOW CHART HERE</div>
+        <div class="plotly-chart" id="t_plot">TEMPERATURE CHART HERE</div>
+      </div>
+    </div>
+    <div class="overlay hidden"></div>
+
+
+  </body>
+</html>
